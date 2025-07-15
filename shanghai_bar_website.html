@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON PULSE | 上海先锋酒吧</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* 背景动态效果 */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #000, #1a1a2e, #16213e);
+            z-index: -2;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #00ffff;
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* 导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00ffff;
+            text-shadow: 0 0 20px #00ffff;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 10px 0;
+        }
+
+        .nav-links a:hover {
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #00ffff;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* 主要内容区域 */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            color: #000;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 30px rgba(0, 255, 255, 0.8);
+        }
+
+        /* 特色区域 */
+        .features {
+            padding: 100px 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-top: 80px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.3);
+            border-color: #00ffff;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #00ffff;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #00ffff;
+        }
+
+        .feature-card p {
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* 位置和联系信息 */
+        .contact-section {
+            padding: 100px 50px;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+            text-align: center;
+        }
+
+        .contact-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .contact-item {
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .contact-item h4 {
+            color: #00ffff;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                gap: 20px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .features {
+                padding: 50px 20px;
+            }
+            
+            .contact-section {
+                padding: 50px 20px;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* 滚动动画 */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="particles" id="particles"></div>
+
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">NEON PULSE</div>
+            <div class="nav-links">
+                <a href="#home">首页</a>
+                <a href="#about">关于</a>
+                <a href="#events">活动</a>
+                <a href="#contact">联系</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>NEON PULSE</h1>
+            <p>在上海的心脏地带，我们为不受约束的灵魂打造专属夜晚体验。<br>
+            这里没有规则，只有纯粹的自由表达与创意碰撞。</p>
+            <a href="#contact" class="cta-button">探索夜晚</a>
+        </div>
+    </section>
+
+    <section class="features" id="about">
+        <div class="scroll-reveal">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 20px; color: #00ffff;">为什么选择我们</h2>
+            <p style="text-align: center; font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto;">
+                我们不只是一个酒吧，我们是创意与激情的聚集地
+            </p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card scroll-reveal">
+                <div class="feature-icon">🎭</div>
+                <h3>创意无界</h3>
+                <p>每个夜晚都是艺术的展现，从调酒师的创意混调到现场的即兴表演，这里是创意灵感的孵化器。</p>
+            </div>
+            
+            <div class="feature-card scroll-reveal">
+                <div class="feature-icon">🌃</div>
+                <h3>上海夜景</h3>
+                <p>坐落在黄浦江畔，享受最佳的城市夜景视角。霓虹灯光与摩天大楼构成完美的都市背景。</p>
+            </div>
+            
+            <div class="feature-card scroll-reveal">
+                <div class="feature-icon">🎵</div>
+                <h3>音乐前沿</h3>
+                <p>从地下电子到实验爵士，我们的音乐总是走在潮流前端，为听觉带来全新的震撼体验。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <div class="contact-content scroll-reveal">
+            <h2 style="font-size: 2.5rem; margin-bottom: 20px; color: #00ffff;">找到我们</h2>
+            <p style="font-size: 1.1rem; opacity: 0.9;">
+                准备好体验不一样的夜晚了吗？我们在上海等你。
+            </p>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h4>📍 地址</h4>
+                    <p>上海市黄浦区南京东路158号<br>正大广场B2层</p>
+                </div>
+                
+                <div class="contact-item">
+                    <h4>🕒 营业时间</h4>
+                    <p>周一至周日<br>晚上8:00 - 凌晨3:00</p>
+                </div>
+                
+                <div class="contact-item">
+                    <h4>📞 预订</h4>
+                    <p>021-6888-9999<br>微信: NeonPulse_SH</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // 创建粒子效果
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // 滚动动画
+        function handleScrollAnimation() {
+            const elements = document.querySelectorAll('.scroll-reveal');
+            
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        // 平滑滚动
+        function smoothScroll() {
+            const links = document.querySelectorAll('a[href^="#"]');
+            
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            handleScrollAnimation();
+            smoothScroll();
+        });
+
+        // 监听滚动事件
+        window.addEventListener('scroll', handleScrollAnimation);
+
+        // 鼠标移动效果
+        document.addEventListener('mousemove', function(e) {
+            const particles = document.querySelectorAll('.particle');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            particles.forEach((particle, index) => {
+                const speed = (index % 5 + 1) * 0.5;
+                const xMove = (x - 0.5) * speed;
+                const yMove = (y - 0.5) * speed;
+                
+                particle.style.transform = `translate(${xMove}px, ${yMove}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
